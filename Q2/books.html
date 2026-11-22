@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books</title>
+</head>
+<body>
+    <h1>Books Summary</h1>
+
+    <section aria-labelledby="high-heading">
+        <p id="firstTitle">First book title is loading...</p>
+        <p id="secondAuthor"></p>
+    </section>
+
+    <section aria-labelledby="genres-heading">
+        <h2 id="genres-heading">Genres by Book</h2>
+        <ul id="genresList"></ul>
+    </section>
+
+    <p id="errorMessage" role="alert" style="color: red;"></p>
+
+    <script>
+        const firstTitleEl = document.getElementById("firstTitle");
+        const secondAuthorEl = document.getElementById("secondAuthor");
+        const genresListEl = document.getElementById("genresList");
+        const errorMessageEl = document.getElementById("errorMessage");
+
+        async function loadBooks() 
+        {
+            try 
+            {
+                const response = await fetch("../Q1/books.json");
+                if (!response.ok)
+                {
+                    throw new Error(`HTTP error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (!data || !Array.isArray(data.books) || data.books.length < 2)
+                {
+                    throw new Error("Invalid books data structure.");
+                }
+
+                const firstBook = data.books[0];
+                const secondBook = data.books[1];
+
+                //title of first book
+                firstTitleEl.textContent = `First Book Title: ${firstBook.title}`;
+
+                //second book's author
+                secondAuthorEl.textContent = `Second Book Author: ${secondBook.author}`;
+
+                //genres og both books, grouped by book title
+                genresListEl.textContent = "";
+                data.books.forEach((book) =>
+                {
+                    const li = document.createElement("li");
+                    const genreText = Array.isArray(book.genres) ? book.genres.join(", ") : "";
+                    li.textContent = `${book.title} - ${genreText}`;
+                    genresListEl.appendChild(li);
+                });
+
+                errorMessageEl.textContent = "";
+            }
+
+            catch (err)
+            {
+                firstTitleEl.textContent = "";
+                secondAuthorEl.textContent = "";
+                genresListEl.textContent = "";
+                errorMessageEl.textContent = "Unable to load book information now. Please run this page through a local server and verify books.json.";
+                console.error (err);
+            }
+        }
+
+        loadBooks();
+    </script>
+</body>
+</html>

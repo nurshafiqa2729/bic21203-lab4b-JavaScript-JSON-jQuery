@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Native JavaSript and jQuery</title>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <style>
+        .myStyle { background-color: coral; 
+            padding: 16px;}
+    </style>
+</head>
+<body>
+    <div id="myElement">Original Text</div>
+    <div id="myDIV"><p>I am a myDIV.</p></div>
+    <button id="myButton" type="button">Click me</button>
+
+    <script>
+        $(function () 
+        {
+        //replace text of #myElement with "Modified Text"
+        //document.getElementById("myElement").textContent = "Modified Text";
+        $("#myElement").text("Modified Text");
+
+        //add the myStyle class to #myDIV
+        //document.querySelector("#myDIV").classList.add("myStyle");
+        $("#myDIV").addClass("myStyle");
+        //respond to a click on #myButton by showing "Button clicked!"
+        //document.getElementById("myButton").addEventListener("click", () => alert("Button clicked!"));
+        $("#myButton").on("click", function () {alert("Button clicked!");});
+        });
+    </script>
+</body>
+</html>
